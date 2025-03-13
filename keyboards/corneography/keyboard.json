@@ -14,7 +14,7 @@
     "mousekey": true,
     "nkro": true,
 		"quantum_painter": true,
-		"oled": true
+		"oled": false
   },
   "matrix_pins": {
     "cols": ["GP29", "GP28", "GP27", "GP26", "GP18", "GP20"],
