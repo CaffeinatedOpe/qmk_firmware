@@ -9,12 +9,11 @@
     "bootmagic": true,
     "command": false,
     "console": true,
-		"debug": true,
+		"debug": false,
     "extrakey": true,
     "mousekey": true,
     "nkro": true,
-		"quantum_painter": true,
-		"oled": false
+		"quantum_painter": true
   },
   "matrix_pins": {
     "cols": ["GP29", "GP28", "GP27", "GP26", "GP18", "GP20"],
