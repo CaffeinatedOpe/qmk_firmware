@@ -11,7 +11,6 @@ static painter_device_t display;
 static painter_image_handle_t cube;
 static deferred_token cube_anim;
 
-static uint32_t key_timer;
 static void check_oled_timeout(void);
 bool is_oled_timeout = false;
 
@@ -29,22 +28,28 @@ void start_cube(void) {
 
 void stop_cube(void) {
 	qp_stop_animation(cube_anim);
-}
-
-void refresh_oled(void) {
-	key_timer = timer_read32();
-	if (is_oled_timeout)
-	{
-		is_oled_timeout = false;
-		stop_cube();
+	if (is_keyboard_left()) {
+		qp_clear(display);
+		qp_drawtext(display, 0, 0, font, messages[0][0]);
+		qp_drawtext(display, 0, 16, font, messages[0][1]);
+	}
+	else {
+		qp_clear(display);
+		qp_drawtext(display, 0, 0, font, messages[0][2]);
+		qp_drawtext(display, 0, 16, font, messages[0][3]);
 	}
 }
 
 void check_oled_timeout(void) {
-	if (!is_oled_timeout && timer_elapsed32(key_timer) > 15000) // check if RGB has already timeout and if enough time has passed
+	if (!is_oled_timeout && last_input_activity_elapsed() > 000)
 	{
 		start_cube();
 		is_oled_timeout = true;
+	}
+	if (last_input_activity_elapsed() < 30000)
+	{
+		is_oled_timeout = false;
+		stop_cube();
 	}
 }
 
@@ -53,8 +58,6 @@ void housekeeping_task_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-	if (record->event.pressed);
-	refresh_oled();
 	switch (keycode) {
 			case LT(0,KC_X):
 					if (!record->tap.count && record->event.pressed) {
