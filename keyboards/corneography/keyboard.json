@@ -13,8 +13,7 @@
     "extrakey": true,
     "mousekey": true,
     "nkro": true,
-		"quantum_painter": true,
-		"rgblight": true
+		"quantum_painter": true
   },
   "matrix_pins": {
     "cols": ["GP29", "GP28", "GP27", "GP26", "GP18", "GP20"],
@@ -32,29 +31,8 @@
     "serial": {
       "driver": "vendor",
       "pin": "GP1"
-    },
-    "usb_detect": {
-      "enabled": true
     }
   },
-	"rgblight": {
-		"led_count": 1,
-		"animations": {
-			"breathing": true
-		},
-		"default": {
-			"animation": "breathing",
-			"hue": 180,
-			"sat": 255,
-			"val": 255
-		},
-		"driver": "ws2812",
-		"split": true
-	},
-	"ws2812": {
-		"driver": "vendor",
-		"pin": "GP17"
-	},
   "url": "",
   "usb": {
     "device_version": "1.0.0",
