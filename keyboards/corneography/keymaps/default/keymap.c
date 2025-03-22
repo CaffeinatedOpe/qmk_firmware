@@ -2,9 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include <qp.h>
-#include "images/cube.qgf.h"
-#include "fonts/pixellari.qff.h"
 
 typedef enum {
 	TD_NONE,
@@ -73,9 +70,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
 		KC_TAB,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                                      KC_M,    KC_N,    KC_E,    KC_I, KC_O, KC_RBRC,
 //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-		KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                                      KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_QUOT,
+		KC_ESC,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                                      KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_QUOT,
 //|--------+--------+--------+--------+--------+--------+--------|               |--------+--------+--------+--------+--------+--------+--------|
-																	LGUI_T(KC_TAB), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          TD(BK_ESC),   LALT_T(KC_END), TO(1)
+					LGUI_T(KC_TAB), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          	LCTL_T(KC_BSPC),   LALT_T(KC_END), TO(1)
 																		//`--------------------------'               `--------------------------'
 
 ),
@@ -87,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	//|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
 	KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,                                      KC_0,    KC_1, KC_2,  KC_3, KC_NO,  KC_BSLS,
 	//|--------+--------+--------+--------+--------+--------+--------|               |--------+--------+--------+--------+--------+--------+--------|
-										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          TD(BK_ESC),   LALT_T(KC_END), TO(2)
+										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          KC_BSPC,   LALT_T(KC_END), TO(2)
 	//`--------------------------'               `--------------------------'
 ),
 [2] = LAYOUT_split_3x6_3(
@@ -98,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	//|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
 	KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,                                      KC_NO,    KC_NO, KC_NO,  KC_NO, KC_NO,  KC_NO,
 	//|--------+--------+--------+--------+--------+--------+--------|               |--------+--------+--------+--------+--------+--------+--------|
-										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          TD(BK_ESC),   LALT_T(KC_END), TO(3)
+										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          KC_BSPC,   LALT_T(KC_END), TO(3)
 	//`--------------------------'               `--------------------------'
 ),
 [3] = LAYOUT_split_3x6_3(
@@ -109,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	//|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
 			KC_TAB,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                      KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_QUOT,
 	//|--------+--------+--------+--------+--------+--------+--------|               |--------+--------+--------+--------+--------+--------+--------|
-										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          TD(BK_ESC),   LALT_T(KC_END), TO(3)
+										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          KC_BSPC,   LALT_T(KC_END), TO(3)
 	//`--------------------------'               `--------------------------'
 	
 	)
