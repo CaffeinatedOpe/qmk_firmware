@@ -40,10 +40,13 @@ typedef struct _slave_to_master_t {
 void load_lyric(int index) {
 	qp_clear(display);
 	if (is_keyboard_left()) {
-		qp_drawtext(display, 0, 0, font, messages[index][0]);
-		qp_drawtext(display, 0, 16, font, messages[index][1]);
+		int16_t width0 = qp_textwidth(font, messages[index][0]);
+		int16_t width1 = qp_textwidth(font, messages[index][1]);
+		qp_drawtext(display, (128-width0), 0, font, messages[index][0]);
+		qp_drawtext(display, 128-width1, 16, font, messages[index][1]);
 	}
 	else {
+
 		qp_drawtext(display, 0, 0, font, messages[index][2]);
 		qp_drawtext(display, 0, 16, font, messages[index][3]);
 	}
