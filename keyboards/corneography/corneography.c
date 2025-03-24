@@ -13,7 +13,8 @@ static deferred_token cube_anim;
 
 static void check_oled_timeout(void);
 bool is_oled_timeout = false;
-int val;
+int screen_state;
+int new_screen;
 
 static const char* messages[10][4] = {
 	{"YOU'LL FIND MY", "SMOKING BODY", "HUNG IN WIRES", "OVERHEAD"},
@@ -48,24 +49,30 @@ void load_lyric(int index) {
 	}
 }
 
+void random_lyric(void) {
+	qp_clear(display);
+    int index = timer_read() % 10;
+    if (is_keyboard_master()) {
+        load_lyric(index);
+        screen_state          = index;
+        master_to_slave_t m2s = {index};
+        slave_to_master_t s2m = {42};
+        transaction_rpc_exec(KEYBOARD_SYNC_RANDINT, sizeof(m2s), &m2s, sizeof(s2m), &s2m);
+    }
+}
+
 void start_cube(void) {
 	if (cube != NULL) {
 		cube_anim = qp_animate(display, 0, 0, cube);
 	}
+	screen_state = -1;
 }
 
 void stop_cube(void) {
-	qp_stop_animation(cube_anim);
-	qp_clear(display);
-	int index = timer_read() % 10;
-	if (is_keyboard_master()) {
-			load_lyric(index);
-            master_to_slave_t m2s = {index};
-            slave_to_master_t s2m = {0};
-            transaction_rpc_exec(KEYBOARD_SYNC_RANDINT, sizeof(m2s), &m2s, sizeof(s2m), &s2m);
-    }
+    qp_stop_animation(cube_anim);
+    screen_state = 0;
+    random_lyric();
 }
-const
 
 void check_oled_timeout(void) {
 	if (!is_oled_timeout && last_input_activity_elapsed() > 30000)
@@ -83,13 +90,15 @@ void check_oled_timeout(void) {
 
 void kb_sync_randint_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
 	const master_to_slave_t *m2s = (const master_to_slave_t*)in_data;
-	slave_to_master_t *s2m = (slave_to_master_t*)out_data;
-	s2m->s2m_data = m2s->m2s_data;
-	load_lyric(s2m->s2m_data);	
+	new_screen = m2s->m2s_data;
 }
 
 void housekeeping_task_kb(void) {
 	check_oled_timeout();
+	if(!is_keyboard_master() && (new_screen  != screen_state) && (screen_state != -1)) { 
+		screen_state = new_screen;
+		load_lyric(screen_state);
+	}
 }
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
@@ -102,6 +111,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 		return true;
 	}
 	return true;
+}
+
+layer_state_t layer_state_set_kb(layer_state_t state) {
+	random_lyric();
+	return state;
 }
 
 void keyboard_post_init_kb(void) {
