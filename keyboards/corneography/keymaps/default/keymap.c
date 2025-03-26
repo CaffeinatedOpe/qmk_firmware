@@ -18,7 +18,8 @@ typedef struct {
 
 enum {
 	SUPER_SHIFT,
-	BK_ESC
+	BK_ESC,
+	RESET
 };
 
 td_state_t cur_dance(tap_dance_state_t *state) {
@@ -58,9 +59,17 @@ void ss_reset(tap_dance_state_t *state, void *user_data) {
 	ss_tap_state.state = TD_NONE;
 }
 
+void safe_reset(tap_dance_state_t *state, void *user_data) {
+	if (state->count >= 3) {
+		reset_keyboard();
+		reset_tap_dance(state);
+	}
+}
+
 tap_dance_action_t tap_dance_actions[] = {
 	[SUPER_SHIFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ss_finished, ss_reset),
 	[BK_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_BSPC, KC_ESC),
+	[RESET] = ACTION_TAP_DANCE_FN(safe_reset),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -89,13 +98,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 [2] = LAYOUT_split_3x6_3(
 	//,-----------------------------------------------------.                                 ,-----------------------------------------------------.
-	QK_BOOT,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,                                      KC_NO,    KC_NO,    KC_UP,    KC_NO,   KC_NO,  QK_BOOT,
+	KC_NO,    KC_NO,    KC_MPRV,    KC_MPLY,    KC_MNXT,    KC_VOLU,                                      KC_PGUP,    KC_NO,    KC_UP,    KC_NO,   KC_NO,  TD(RESET),
 	//|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-	KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,                                      KC_NO,    KC_LEFT,    KC_DOWN,    KC_RIGHT, KC_NO, KC_NO,
+	KC_NO,    KC_NO,   KC_LALT,    KC_LGUI,    KC_LCTL,    KC_MUTE,                                      KC_DEL,    KC_LEFT,    KC_DOWN,    KC_RIGHT, KC_NO, KC_NO,
 	//|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-	KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,                                      KC_NO,    KC_NO, KC_NO,  KC_NO, KC_NO,  KC_NO,
+	KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_VOLD,                                      KC_PGDN,    KC_NO, KC_NO,  KC_NO, KC_NO,  KC_NO,
 	//|--------+--------+--------+--------+--------+--------+--------|               |--------+--------+--------+--------+--------+--------+--------|
-										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          KC_BSPC,   LALT_T(KC_END), TO(3)
+										TO(0), LCTL_T(KC_HOME), TD(SUPER_SHIFT),          KC_BSPC,   LALT_T(KC_END), KC_NO
 	//`--------------------------'               `--------------------------'
 ),
 [3] = LAYOUT_split_3x6_3(
